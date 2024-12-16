@@ -1,0 +1,121 @@
+[2024-12-12T19:17:53.924Z] Nova busca iniciada: {"query":"coldplay","page":1,"type":"audio","itemsPerPage":10,"cacheKey":"audio_coldplay_1"}
+[2024-12-12T19:17:53.928Z] Resultado encontrado no cache para: audio_coldplay_1
+[2024-12-12T19:17:56.822Z] Nova busca iniciada: {"query":"coldplay","page":1,"type":"video","itemsPerPage":10,"cacheKey":"video_coldplay_1"}
+[2024-12-12T19:17:56.823Z] Resultado encontrado no cache para: video_coldplay_1
+[2024-12-12T19:18:00.109Z] Nova busca iniciada: {"query":"coldplay","page":1,"type":"audio","itemsPerPage":10,"cacheKey":"audio_coldplay_1"}
+[2024-12-12T19:18:00.111Z] Resultado encontrado no cache para: audio_coldplay_1
+[2024-12-12T19:18:07.966Z] Nova busca iniciada: {"query":"coldplay","page":1,"type":"video","itemsPerPage":10,"cacheKey":"video_coldplay_1"}
+[2024-12-12T19:18:07.967Z] Resultado encontrado no cache para: video_coldplay_1
+[2024-12-12T19:18:09.604Z] Nova busca iniciada: {"query":"coldplay","page":1,"type":"audio","itemsPerPage":10,"cacheKey":"audio_coldplay_1"}
+[2024-12-12T19:18:09.605Z] Resultado encontrado no cache para: audio_coldplay_1
+[2024-12-12T19:18:45.581Z] Nova busca iniciada: {"query":"coldplay","page":1,"type":"video","itemsPerPage":10,"cacheKey":"video_coldplay_1"}
+[2024-12-12T19:18:45.582Z] Resultado encontrado no cache para: video_coldplay_1
+[2024-12-12T19:18:48.444Z] Nova busca iniciada: {"query":"coldplay","page":1,"type":"audio","itemsPerPage":10,"cacheKey":"audio_coldplay_1"}
+[2024-12-12T19:18:48.445Z] Resultado encontrado no cache para: audio_coldplay_1
+[2024-12-12T19:18:50.429Z] Nova busca iniciada: {"query":"coldplay","page":1,"type":"video","itemsPerPage":10,"cacheKey":"video_coldplay_1"}
+[2024-12-12T19:18:50.430Z] Resultado encontrado no cache para: video_coldplay_1
+[2024-12-12T19:18:52.020Z] Nova busca iniciada: {"query":"coldplay","page":1,"type":"audio","itemsPerPage":10,"cacheKey":"audio_coldplay_1"}
+[2024-12-12T19:18:52.022Z] Resultado encontrado no cache para: audio_coldplay_1
+[2024-12-12T19:22:12.080Z] Nova busca iniciada: {"query":"coldplay","page":1,"type":"video","itemsPerPage":10,"cacheKey":"video_coldplay_1"}
+[2024-12-12T19:22:12.081Z] Resultado encontrado no cache para: video_coldplay_1
+[2024-12-12T19:22:28.213Z] Nova busca iniciada: {"query":"coldplay","page":1,"type":"audio","itemsPerPage":10,"cacheKey":"audio_coldplay_1"}
+[2024-12-12T19:22:28.215Z] Resultado encontrado no cache para: audio_coldplay_1
+[2024-12-12T19:23:02.330Z] Playlists salvas com sucesso 
+[2024-12-12T19:28:07.936Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"audio","itemsPerPage":10,"cacheKey":"audio_COLDPLAY_1"}
+[2024-12-12T19:28:07.937Z] Executando yt-dlp com argumentos: ["ytsearch10:COLDPLAY","--dump-json","--no-playlist","--extract-audio","--format","bestaudio"]
+[2024-12-12T19:28:07.939Z] Caminho do yt-dlp: C:\Users\User1\Desktop\TEST-SEARCH\3-MixStreamLP\bin\yt-dlp.exe
+[2024-12-12T19:28:14.832Z] Recebendo dados do yt-dlp (136994 bytes) 
+[2024-12-12T19:28:17.860Z] Recebendo dados do yt-dlp (532769 bytes) 
+[2024-12-12T19:28:20.721Z] Recebendo dados do yt-dlp (533062 bytes) 
+[2024-12-12T19:28:22.638Z] Recebendo dados do yt-dlp (121539 bytes) 
+[2024-12-12T19:28:25.454Z] Recebendo dados do yt-dlp (495271 bytes) 
+[2024-12-12T19:28:28.350Z] Recebendo dados do yt-dlp (516439 bytes) 
+[2024-12-12T19:28:31.356Z] Recebendo dados do yt-dlp (517802 bytes) 
+[2024-12-12T19:28:33.093Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"video","itemsPerPage":10,"cacheKey":"video_COLDPLAY_1"}
+[2024-12-12T19:28:33.094Z] Executando yt-dlp com argumentos: ["ytsearch10:COLDPLAY","--dump-json","--no-playlist","--format","bestvideo[height<=720]+bestaudio/best[height<=720]"]
+[2024-12-12T19:28:33.095Z] Caminho do yt-dlp: C:\Users\User1\Desktop\TEST-SEARCH\3-MixStreamLP\bin\yt-dlp.exe
+[2024-12-12T19:28:34.424Z] Recebendo dados do yt-dlp (532648 bytes) 
+[2024-12-12T19:28:37.541Z] Recebendo dados do yt-dlp (523390 bytes) 
+[2024-12-12T19:28:39.975Z] Recebendo dados do yt-dlp (106187 bytes) 
+[2024-12-12T19:28:40.372Z] Recebendo dados do yt-dlp (139548 bytes) 
+[2024-12-12T19:28:40.463Z] yt-dlp processo finalizado com código: 0
+[2024-12-12T19:28:40.501Z] Número total de resultados: 10
+[2024-12-12T19:28:40.503Z] Resultados para página 1: 10
+[2024-12-12T19:28:40.506Z] Cache salvo com sucesso 
+[2024-12-12T19:28:40.506Z] Resposta enviada com sucesso para: audio_COLDPLAY_1
+[2024-12-12T19:28:43.365Z] Recebendo dados do yt-dlp (536443 bytes) 
+[2024-12-12T19:28:45.078Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"audio","itemsPerPage":10,"cacheKey":"audio_COLDPLAY_1"}
+[2024-12-12T19:28:45.079Z] Resultado encontrado no cache para: audio_COLDPLAY_1
+[2024-12-12T19:28:45.670Z] Recebendo dados do yt-dlp (124124 bytes) 
+[2024-12-12T19:28:49.075Z] Recebendo dados do yt-dlp (535184 bytes) 
+[2024-12-12T19:28:51.849Z] Recebendo dados do yt-dlp (499513 bytes) 
+[2024-12-12T19:28:53.479Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"audio","itemsPerPage":10,"cacheKey":"audio_COLDPLAY_1"}
+[2024-12-12T19:28:53.480Z] Resultado encontrado no cache para: audio_COLDPLAY_1
+[2024-12-12T19:28:54.686Z] Recebendo dados do yt-dlp (141366 bytes) 
+[2024-12-12T19:28:58.119Z] Recebendo dados do yt-dlp (520296 bytes) 
+[2024-12-12T19:29:01.358Z] Recebendo dados do yt-dlp (531405 bytes) 
+[2024-12-12T19:29:04.668Z] Recebendo dados do yt-dlp (518936 bytes) 
+[2024-12-12T19:29:07.942Z] Recebendo dados do yt-dlp (514094 bytes) 
+[2024-12-12T19:29:07.969Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"video","itemsPerPage":10,"cacheKey":"video_COLDPLAY_1"}
+[2024-12-12T19:29:07.970Z] Executando yt-dlp com argumentos: ["ytsearch10:COLDPLAY","--dump-json","--no-playlist","--format","bestvideo[height<=720]+bestaudio/best[height<=720]"]
+[2024-12-12T19:29:07.971Z] Caminho do yt-dlp: C:\Users\User1\Desktop\TEST-SEARCH\3-MixStreamLP\bin\yt-dlp.exe
+[2024-12-12T19:29:08.413Z] yt-dlp processo finalizado com código: 0
+[2024-12-12T19:29:08.440Z] Número total de resultados: 10
+[2024-12-12T19:29:08.441Z] Resultados para página 1: 10
+[2024-12-12T19:29:08.444Z] Cache salvo com sucesso 
+[2024-12-12T19:29:08.445Z] Resposta enviada com sucesso para: video_COLDPLAY_1
+[2024-12-12T19:29:08.451Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"video","itemsPerPage":10,"cacheKey":"video_COLDPLAY_1"}
+[2024-12-12T19:29:08.453Z] Resultado encontrado no cache para: video_COLDPLAY_1
+[2024-12-12T19:29:15.005Z] Recebendo dados do yt-dlp (139575 bytes) 
+[2024-12-12T19:29:17.255Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"audio","itemsPerPage":10,"cacheKey":"audio_COLDPLAY_1"}
+[2024-12-12T19:29:17.256Z] Resultado encontrado no cache para: audio_COLDPLAY_1
+[2024-12-12T19:29:18.131Z] Recebendo dados do yt-dlp (536510 bytes) 
+[2024-12-12T19:29:21.082Z] Recebendo dados do yt-dlp (535688 bytes) 
+[2024-12-12T19:29:23.262Z] Recebendo dados do yt-dlp (124124 bytes) 
+[2024-12-12T19:29:23.350Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"video","itemsPerPage":10,"cacheKey":"video_COLDPLAY_1"}
+[2024-12-12T19:29:23.351Z] Resultado encontrado no cache para: video_COLDPLAY_1
+[2024-12-12T19:29:26.086Z] Recebendo dados do yt-dlp (499561 bytes) 
+[2024-12-12T19:29:29.283Z] Recebendo dados do yt-dlp (520266 bytes) 
+[2024-12-12T19:29:32.277Z] Recebendo dados do yt-dlp (518974 bytes) 
+[2024-12-12T19:29:35.613Z] Recebendo dados do yt-dlp (535265 bytes) 
+[2024-12-12T19:29:38.418Z] Recebendo dados do yt-dlp (149675 bytes) 
+[2024-12-12T19:29:41.415Z] Recebendo dados do yt-dlp (524639 bytes) 
+[2024-12-12T19:29:41.921Z] yt-dlp processo finalizado com código: 0
+[2024-12-12T19:29:41.958Z] Número total de resultados: 10
+[2024-12-12T19:29:41.960Z] Resultados para página 1: 10
+[2024-12-12T19:29:41.962Z] Cache salvo com sucesso 
+[2024-12-12T19:29:41.963Z] Resposta enviada com sucesso para: video_COLDPLAY_1
+[2024-12-12T19:29:44.294Z] Playlists salvas com sucesso 
+[2024-12-12T19:29:49.159Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"audio","itemsPerPage":10,"cacheKey":"audio_COLDPLAY_1"}
+[2024-12-12T19:29:49.160Z] Resultado encontrado no cache para: audio_COLDPLAY_1
+[2024-12-12T19:30:00.880Z] Playlists salvas com sucesso 
+[2024-12-12T19:30:02.502Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"audio","itemsPerPage":10,"cacheKey":"audio_COLDPLAY_1"}
+[2024-12-12T19:30:02.503Z] Resultado encontrado no cache para: audio_COLDPLAY_1
+[2024-12-12T19:30:03.228Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"video","itemsPerPage":10,"cacheKey":"video_COLDPLAY_1"}
+[2024-12-12T19:30:03.230Z] Resultado encontrado no cache para: video_COLDPLAY_1
+[2024-12-12T19:30:06.054Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"audio","itemsPerPage":10,"cacheKey":"audio_COLDPLAY_1"}
+[2024-12-12T19:30:06.055Z] Resultado encontrado no cache para: audio_COLDPLAY_1
+[2024-12-12T19:30:12.447Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"video","itemsPerPage":10,"cacheKey":"video_COLDPLAY_1"}
+[2024-12-12T19:30:12.448Z] Resultado encontrado no cache para: video_COLDPLAY_1
+[2024-12-12T19:42:09.108Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"video","itemsPerPage":10,"cacheKey":"video_COLDPLAY_1"}
+[2024-12-12T19:42:09.109Z] Resultado encontrado no cache para: video_COLDPLAY_1
+[2024-12-12T19:47:54.036Z] Nova busca iniciada: {"query":"COLDPLAY","page":1,"type":"video","itemsPerPage":10,"cacheKey":"video_COLDPLAY_1"}
+[2024-12-12T19:47:54.037Z] Resultado encontrado no cache para: video_COLDPLAY_1
+[2024-12-12T19:48:03.539Z] Nova busca iniciada: {"query":"u2","page":1,"type":"video","itemsPerPage":10,"cacheKey":"video_u2_1"}
+[2024-12-12T19:48:03.540Z] Executando yt-dlp com argumentos: ["ytsearch10:u2","--dump-json","--no-playlist","--format","bestvideo[height<=720]+bestaudio/best[height<=720]"]
+[2024-12-12T19:48:03.541Z] Caminho do yt-dlp: C:\Users\User1\Desktop\TEST-SEARCH\3-MixStreamLP\bin\yt-dlp.exe
+[2024-12-12T19:48:10.923Z] Recebendo dados do yt-dlp (145445 bytes) 
+[2024-12-12T19:48:13.901Z] Recebendo dados do yt-dlp (164530 bytes) 
+[2024-12-12T19:48:16.507Z] Recebendo dados do yt-dlp (101946 bytes) 
+[2024-12-12T19:48:19.059Z] Recebendo dados do yt-dlp (154275 bytes) 
+[2024-12-12T19:48:21.089Z] Recebendo dados do yt-dlp (130163 bytes) 
+[2024-12-12T19:48:23.854Z] Recebendo dados do yt-dlp (130532 bytes) 
+[2024-12-12T19:48:26.834Z] Recebendo dados do yt-dlp (136990 bytes) 
+[2024-12-12T19:48:29.631Z] Recebendo dados do yt-dlp (152435 bytes) 
+[2024-12-12T19:48:32.430Z] Recebendo dados do yt-dlp (136540 bytes) 
+[2024-12-12T19:48:35.225Z] Recebendo dados do yt-dlp (445603 bytes) 
+[2024-12-12T19:48:35.721Z] yt-dlp processo finalizado com código: 0
+[2024-12-12T19:48:35.737Z] Número total de resultados: 10
+[2024-12-12T19:48:35.738Z] Resultados para página 1: 10
+[2024-12-12T19:48:35.742Z] Cache salvo com sucesso 
+[2024-12-12T19:48:35.743Z] Resposta enviada com sucesso para: video_u2_1

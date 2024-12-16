@@ -1,0 +1,14 @@
+version: '3'
+services:
+  mixstream:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3000:3000"
+      - "3002:3002"
+    restart: unless-stopped
+    volumes:
+      - ../:/app
+    environment:
+      - NODE_ENV=production

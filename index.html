@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Search Test</title>
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --surface-color: #2d2d2d;
+            --primary-color: #4CAF50;
+            --primary-hover: #45a049;
+            --text-color: #ffffff;
+            --text-secondary: #b3b3b3;
+            --border-color: #404040;
+            --error-bg: #ff333330;
+            --error-text: #ff4444;
+            --player-bg: #1e3a1f;  /* Nova cor de fundo do player */
+            --player-border: #2d5e2f;  /* Nova cor da borda do player */
+            --player-button-bg: #3d8c40;  /* Nova cor dos botões do player */
+            --player-button-hover: #4caf50;  /* Cor hover dos botões do player */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        #search-container {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        #search-input {
+            flex-grow: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--surface-color);
+            color: var(--text-color);
+        }
+
+        #search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .control-button, #search-button, #load-more-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .control-button:hover, #search-button:hover, #load-more-button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .control-button:disabled, #search-button:disabled, #load-more-button:disabled {
+            background-color: var(--border-color);
+            cursor: not-allowed;
+        }
+
+        .result-item {
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            margin: 10px 0;
+            cursor: pointer;
+            background-color: var(--surface-color);
+            border-radius: 8px;
+            transition: all 0.2s;
+            display: flex;
+            gap: 15px;
+            align-items: start;
+        }
+
+        .result-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .result-item.playing {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .thumbnail {
+            width: 120px;
+            height: 68px;
+            border-radius: 4px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background-color: var(--surface-color);
+        }
+
+        .result-content {
+            flex-grow: 1;
+        }
+
+        .result-item h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: var(--text-color);
+        }
+
+        .result-info {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        #player {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--player-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            bottom: 20px;
+            border: 2px solid var(--player-border);
+            backdrop-filter: blur(10px);
+        }
+
+        #player-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #player .control-button {
+            background-color: var(--player-button-bg);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            min-width: 90px;
+        }
+
+        #player .control-button:hover:not(:disabled) {
+            background-color: var(--player-button-hover);
+            transform: translateY(-2px);
+        }
+
+        #player .control-button:disabled {
+            background-color: var(--border-color);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        #now-playing {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: var(--text-color);
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .autoplay-container {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 15px;
+            color: var(--text-color);
+            font-size: 14px;
+            background-color: var(--player-button-bg);
+            padding: 5px 12px;
+            border-radius: 6px;
+        }
+
+        .autoplay-container input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--primary-color);
+        }
+
+        audio {
+            width: 100%;
+            height: 36px;
+            margin-top: 10px;
+            border-radius: 6px;
+            background-color: var(--surface-color);
+        }
+
+        audio::-webkit-media-controls-panel {
+            background-color: var(--surface-color);
+        }
+
+        audio::-webkit-media-controls-current-time-display,
+        audio::-webkit-media-controls-time-remaining-display {
+            color: var(--text-color);
+        }
+
+        .error {
+            color: var(--error-text);
+            padding: 10px;
+            background-color: var(--error-bg);
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        .default-thumbnail {
+            background-color: var(--surface-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .playlist-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .playlist-button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .nav-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: var(--text-color);
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-tab.active {
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .playlist-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .playlist-item {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            background-color: var(--surface-color);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .playlist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .playlist-songs {
+            margin-top: 10px;
+            padding-left: 15px;
+        }
+
+        .playlist-song {
+            display: flex;
+            align-items: center;
+            padding: 5px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .playlist-song img {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .playlist-song-info {
+            flex-grow: 1;
+        }
+
+        .playlist-song-title {
+            font-weight: bold;
+        }
+
+        .playlist-song-artist {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            animation: fadeOut 3s forwards;
+            z-index: 1000;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--background-color);
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 300px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .playlist-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .playlist-form input {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Scrollbar customization */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search for a song...">
+        <button id="search-button">Search</button>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="nav-tab active" data-tab="search">Search</button>
+        <button class="nav-tab" data-tab="playlists">Playlists</button>
+    </div>
+
+    <div id="search-tab" class="tab-content active">
+        <div id="results"></div>
+        <div id="load-more-container" style="text-align: center; margin: 20px 0; display: none;">
+            <button id="load-more-button" class="control-button">Load More Results</button>
+        </div>
+    </div>
+
+    <div id="playlists-tab" class="tab-content">
+        <button id="create-playlist-button" class="playlist-button">Create New Playlist</button>
+        <div id="playlists-container" class="playlist-list"></div>
+    </div>
+
+    <div id="player">
+        <div id="now-playing"></div>
+        <div id="player-controls">
+            <button id="prev-button" class="control-button" disabled>Previous</button>
+            <button id="play-pause-button" class="control-button" disabled>Play</button>
+            <button id="next-button" class="control-button" disabled>Next</button>
+            <div class="autoplay-container">
+                <input type="checkbox" id="autoplay-toggle" checked>
+                <label for="autoplay-toggle">Auto-play next</label>
+            </div>
+        </div>
+        <audio id="audio-player" controls></audio>
+    </div>
+
+    <!-- Modal para criar/editar playlist -->
+    <div id="playlist-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Create Playlist</h2>
+                <span class="modal-close">&times;</span>
+            </div>
+            <form id="playlist-form" class="playlist-form">
+                <input type="text" id="playlist-name" placeholder="Playlist Name" required>
+                <button type="submit" class="playlist-button">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

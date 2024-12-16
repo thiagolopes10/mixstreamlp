@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MixStream Launcher</title>
+    <style>
+        :root {
+            --bg-gradient-1: #1a1a2e;
+            --bg-gradient-2: #16213e;
+            --accent-color: #4CAF50;
+            --accent-hover: #45a049;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --button-shadow: rgba(76, 175, 80, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: var(--text-primary);
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .launch-button {
+            position: relative;
+            padding: 20px 40px;
+            min-width: 250px;
+            font-size: 1.2em;
+            color: var(--text-primary);
+            background: var(--accent-color);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            box-shadow: 0 8px 25px var(--button-shadow);
+        }
+
+        .launch-button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px var(--button-shadow);
+        }
+
+        .launch-button:active {
+            transform: translateY(1px);
+        }
+
+        .icon {
+            display: block;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .button-text {
+            display: block;
+            font-weight: 500;
+        }
+
+        .button-subtext {
+            display: block;
+            font-size: 0.8em;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .buttons-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+        }
+
+        /* Animação de partículas */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+    </style>
+</head>
+<body>
+    <!-- Partículas de fundo -->
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <h1>MixStream</h1>
+        <p class="subtitle">Escolha seu player preferido</p>
+        
+        <div class="buttons-container">
+            <a href="index.html" class="launch-button">
+                <span class="icon">🎵</span>
+                <span class="button-text">Audio Player</span>
+                <span class="button-subtext">Reprodutor de Música</span>
+            </a>
+
+            <a href="player.html" class="launch-button">
+                <span class="icon">🎬</span>
+                <span class="button-text">Video Player</span>
+                <span class="button-subtext">Reprodutor de Vídeo</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Função para verificar se um servidor está online
+        async function checkServer(port) {
+            try {
+                const response = await fetch(`http://localhost:${port}/status`);
+                const data = await response.json();
+                return { ok: response.ok, type: data.type };
+            } catch (error) {
+                return { ok: false, type: null };
+            }
+        }
+
+        // Função para redirecionar com verificação de servidor
+        async function redirectToPlayer(type) {
+            const audioPort = 3002;
+            const videoPort = 3000;
+            
+            if (type === 'audio') {
+                const status = await checkServer(audioPort);
+                if (status.ok && status.type === 'audio') {
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Servidor de áudio não está disponível. Por favor, execute start-servers.bat primeiro.');
+                }
+            } else {
+                const status = await checkServer(videoPort);
+                if (status.ok && status.type === 'video') {
+                    window.location.href = 'player.html';
+                } else {
+                    alert('Servidor de vídeo não está disponível. Por favor, execute start-servers.bat primeiro.');
+                }
+            }
+        }
+
+        // Atualizar os links para usar a função de redirecionamento
+        document.addEventListener('DOMContentLoaded', () => {
+            const audioButton = document.querySelector('a[href="index.html"]');
+            const videoButton = document.querySelector('a[href="player.html"]');
+            
+            audioButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                redirectToPlayer('audio');
+            });
+            
+            videoButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                redirectToPlayer('video');
+            });
+        });
+
+        // Criar partículas de fundo
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const numberOfParticles = 50;
+
+            for (let i = 0; i < numberOfParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Posição aleatória
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                // Tamanho aleatório
+                const size = Math.random() * 4 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Duração da animação aleatória
+                const duration = Math.random() * 20 + 10;
+                particle.style.animation = `float ${duration}s infinite linear`;
+                
+                // Atraso inicial aleatório
+                particle.style.animationDelay = -Math.random() * duration + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Iniciar animação de partículas quando a página carregar
+        window.addEventListener('load', createParticles);
+    </script>
+</body>
+</html>

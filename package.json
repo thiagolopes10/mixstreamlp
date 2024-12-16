@@ -1,0 +1,16 @@
+{
+  "name": "video-player",
+  "version": "1.0.0",
+  "description": "Video player application with YouTube integration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "start cmd /c \"node server.js\" && start cmd /c \"node test-server.js\"",
+    "video-server": "node server.js",
+    "audio-server": "node test-server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}

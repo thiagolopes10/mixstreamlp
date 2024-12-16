@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Video Player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        :root {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent-color: #4CAF50;
+            --accent-hover: #45a049;
+            --border-color: #404040;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        #searchContainer {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #searchInput {
+            width: 70%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        #searchButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: var(--accent-color);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        #searchButton:hover {
+            background-color: var(--accent-hover);
+        }
+
+        #videoContainer {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            display: none;
+        }
+
+        #resultsContainer {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .video-item {
+            display: flex;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            align-items: center;
+            background-color: var(--bg-secondary);
+            width: 100%;
+        }
+
+        .video-item:hover {
+            background-color: var(--border-color);
+        }
+
+        .video-thumbnail {
+            width: 120px;
+            height: 67.5px;
+            margin-right: 10px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .video-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 67.5px;
+            padding: 5px;
+        }
+
+        .video-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+            color: var(--text-primary);
+        }
+
+        .video-duration {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+
+        .loading-message {
+            text-align: center;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .player-controls button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background: var(--accent-color);
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .player-controls button:hover {
+            background: var(--accent-hover);
+        }
+
+        .player-controls button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        #videoPlayer {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+            margin: 10px 0;
+            color: var(--text-primary);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            color: #ff6b6b;
+            padding: 10px;
+            text-align: center;
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        #loadMoreContainer {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        #loadMoreButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: var(--accent-color);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #loadMoreButton:hover {
+            background-color: var(--accent-hover);
+        }
+
+        #loadMoreButton:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="searchContainer">
+            <input type="text" id="searchInput" placeholder="Buscar vídeos...">
+            <button id="searchButton">Buscar</button>
+        </div>
+
+        <div id="videoContainer">
+            <h2 id="videoTitle"></h2>
+            <div class="video-wrapper">
+                <video id="playerWrapper" controls playsinline>
+                    Seu navegador não suporta a tag de vídeo.
+                </video>
+                <audio id="audioPlayer" style="display: none;"></audio>
+            </div>
+            <div class="player-controls">
+                <button id="prevButton" onclick="playPreviousVideo()">Anterior</button>
+                <button id="playPauseButton" onclick="togglePlayPause()">Pausar</button>
+                <button id="nextButton" onclick="playNextVideo()">Próximo</button>
+            </div>
+        </div>
+
+        <div id="resultsContainer"></div>
+    </div>
+
+    <button id="loadMoreButton" style="display: none;">Carregar Mais</button>
+
+    <script>
+        // Configuração do servidor
+        const SERVER_URL = 'http://localhost:3000';
+        let currentAudio = null;
+        let currentVideoElement = null;
+        let currentVideoId = null;
+        let isPlaying = false;
+        let currentPage = 1;
+        let currentSearchQuery = '';
+        let isSearching = false;
+        let videoList = [];
+        let keepAliveInterval;
+        let forcePlayInterval;
+        let wasPlayingBeforeHidden = false;
+        let wakeLockController = null;
+
+        // Função para gerenciar o WakeLock
+        async function handleWakeLock(shouldLock) {
+            try {
+                if (shouldLock && !wakeLockController && 'wakeLock' in navigator) {
+                    wakeLockController = await navigator.wakeLock.request('screen').catch(() => null);
+                } else if (!shouldLock && wakeLockController) {
+                    await wakeLockController.release();
+                    wakeLockController = null;
+                }
+            } catch (err) {
+                console.log('WakeLock não suportado ou não disponível');
+            }
+        }
+
+        // Nova função para forçar a reprodução
+        async function forcePlay() {
+            if (currentVideoElement) {
+                // Verifica se o vídeo estava pausado intencionalmente
+                if (currentVideoElement.paused && !wasPlayingBeforeHidden) {
+                    return; // Não força o play se estava pausado intencionalmente
+                }
+                
+                try {
+                    const playPromise = currentVideoElement.play();
+                    if (playPromise !== undefined) {
+                        await playPromise;
+                        if (currentAudio) {
+                            try {
+                                await currentAudio.play();
+                            } catch (audioErr) {
+                                console.log('Erro ao reproduzir áudio:', audioErr);
+                            }
+                        }
+                    }
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        console.log('Erro ao forçar reprodução:', err);
+                    }
+                }
+            }
+        }
+
+        // Iniciar intervalo de força de reprodução
+        function startForcePlayInterval() {
+            if (forcePlayInterval) {
+                clearInterval(forcePlayInterval);
+            }
+            forcePlayInterval = setInterval(forcePlay, 1000);
+        }
+
+        // Parar intervalo de força de reprodução
+        function stopForcePlayInterval() {
+            if (forcePlayInterval) {
+                clearInterval(forcePlayInterval);
+            }
+        }
+
+        // Handle visibility change com nova lógica
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                // Salva o estado de reprodução antes de esconder
+                wasPlayingBeforeHidden = currentVideoElement ? !currentVideoElement.paused : false;
+                if (wasPlayingBeforeHidden) {
+                    startForcePlayInterval();
+                }
+                handleWakeLock(false); // Libera o WakeLock quando em background
+            } else {
+                stopForcePlayInterval();
+                // Se estava tocando antes, continua tocando
+                if (wasPlayingBeforeHidden && currentVideoElement) {
+                    currentVideoElement.play().catch(() => {});
+                }
+                if (!currentVideoElement?.paused) {
+                    handleWakeLock(true); // Ativa o WakeLock quando visível e reproduzindo
+                }
+            }
+        });
+
+        // Prevent browser from auto-pausing media
+        function createKeepAlive() {
+            if (keepAliveInterval) {
+                clearInterval(keepAliveInterval);
+            }
+            keepAliveInterval = setInterval(() => {
+                if (currentVideoElement && !currentVideoElement.paused) {
+                    navigator.sendBeacon('http://localhost:3000/keepalive');
+                }
+            }, 20000);
+        }
+
+        function updateNavigationButtons() {
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+            
+            if (!videoList.length || !currentVideoId) {
+                prevButton.disabled = true;
+                nextButton.disabled = true;
+                return;
+            }
+
+            const currentIndex = videoList.findIndex(v => v.id === currentVideoId);
+            prevButton.disabled = currentIndex <= 0;
+            nextButton.disabled = currentIndex >= videoList.length - 1;
+        }
+
+        function playNextVideo() {
+            const currentIndex = videoList.findIndex(v => v.id === currentVideoId);
+            if (currentIndex < videoList.length - 1) {
+                loadVideo(videoList[currentIndex + 1]);
+            }
+        }
+
+        function playPreviousVideo() {
+            const currentIndex = videoList.findIndex(v => v.id === currentVideoId);
+            if (currentIndex > 0) {
+                loadVideo(videoList[currentIndex - 1]);
+            }
+        }
+
+        function togglePlayPause() {
+            const video = document.getElementById('playerWrapper');
+            const audio = document.getElementById('audioPlayer');
+            const playPauseButton = document.getElementById('playPauseButton');
+            
+            if (video.paused) {
+                video.play();
+                audio.play();
+                playPauseButton.textContent = 'Pausar';
+            } else {
+                video.pause();
+                audio.pause();
+                playPauseButton.textContent = 'Reproduzir';
+            }
+        }
+
+        async function loadVideo(video) {
+            try {
+                if (!video || !video.id) {
+                    throw new Error('Invalid video information');
+                }
+
+                // Atualizar ID do vídeo atual
+                currentVideoId = video.id;
+                updateNavigationButtons();
+
+                const videoElement = document.getElementById('playerWrapper');
+                const audioElement = document.getElementById('audioPlayer');
+                const videoContainer = document.getElementById('videoContainer');
+                const videoTitle = document.getElementById('videoTitle');
+
+                // Mostrar container de vídeo
+                videoContainer.style.display = 'block';
+                
+                // Criar e mostrar mensagem de buffer
+                const loadingMessage = document.createElement('div');
+                loadingMessage.className = 'loading-message';
+                loadingMessage.textContent = 'Carregando vídeo e áudio... Aguarde 6 segundos para buffer.';
+                videoTitle.insertAdjacentElement('afterend', loadingMessage);
+
+                // Buscar URLs do vídeo no servidor
+                const response = await fetch(`${SERVER_URL}/video/${video.id}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch video data');
+                }
+                const data = await response.json();
+
+                if (!data.videoUrl || !data.audioUrl) {
+                    throw new Error('Invalid video or audio URL');
+                }
+
+                // Configurar sources
+                videoElement.src = `${SERVER_URL}/proxy-stream?url=${encodeURIComponent(data.videoUrl)}`;
+                audioElement.src = `${SERVER_URL}/proxy-stream?url=${encodeURIComponent(data.audioUrl)}`;
+
+                // Atualizar título
+                if (video.title) {
+                    videoTitle.textContent = video.title;
+                }
+
+                // Aguardar carregamento inicial do vídeo e áudio
+                await Promise.all([
+                    new Promise(resolve => {
+                        videoElement.addEventListener('loadeddata', resolve, { once: true });
+                        videoElement.load();
+                    }),
+                    new Promise(resolve => {
+                        audioElement.addEventListener('loadeddata', resolve, { once: true });
+                        audioElement.load();
+                    })
+                ]);
+
+                // Aguardar 6 segundos adicionais para buffer
+                await new Promise(resolve => setTimeout(resolve, 6000));
+        
+                // Remover mensagem de loading
+                loadingMessage.remove();
+
+                // Iniciar reprodução sincronizada
+                await videoElement.play();
+                await audioElement.play();
+        
+                console.log('Video e áudio iniciados com sucesso');
+            } catch (error) {
+                console.error('Error loading video:', error);
+                alert('Erro ao carregar o vídeo. Por favor, tente novamente.');
+            }
+        }
+
+        // Atualizar a função de pré-carregamento
+        async function preloadNextVideo(videoId) {
+            try {
+                const response = await fetch(`${SERVER_URL}/video/${videoId}`);
+                const data = await response.json();
+                
+                if (!data.error && data.url) {
+                    // Criar um elemento de vídeo oculto para pré-carregar
+                    const preloadVideo = document.createElement('video');
+                    preloadVideo.style.display = 'none';
+                    preloadVideo.preload = 'auto';
+                    preloadVideo.src = `${SERVER_URL}/proxy-stream?url=${encodeURIComponent(data.url)}`;
+                    document.body.appendChild(preloadVideo);
+                    
+                    // Remover após alguns segundos
+                    setTimeout(() => {
+                        preloadVideo.remove();
+                    }, 5000);
+                }
+            } catch (error) {
+                console.error('Erro ao pré-carregar vídeo:', error);
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('prevButton').addEventListener('click', playPreviousVideo);
+        document.getElementById('nextButton').addEventListener('click', playNextVideo);
+        document.getElementById('playPauseButton').addEventListener('click', togglePlayPause);
+        
+        document.getElementById('searchButton').addEventListener('click', () => {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                searchVideos(query);
+            }
+        });
+
+        document.getElementById('searchInput').addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                const query = event.target.value.trim();
+                if (query) {
+                    searchVideos(query);
+                }
+            }
+        });
+
+        document.getElementById('loadMoreButton').addEventListener('click', () => {
+            if (currentSearchQuery) {
+                searchVideos(currentSearchQuery, currentPage + 1, true);
+            }
+        });
+
+        async function searchVideos(query, page = 1, append = false) {
+            if (isSearching) return;
+            isSearching = true;
+
+            const loadMoreButton = document.getElementById('loadMoreButton');
+            const searchButton = document.getElementById('searchButton');
+            searchButton.disabled = true;
+
+            if (!append) {
+                document.getElementById('resultsContainer').innerHTML = '<div class="loading"><div class="loading-spinner"></div>Buscando vídeos...</div>';
+                loadMoreButton.style.display = 'none';
+                videoList = [];
+            }
+
+            try {
+                const response = await fetch(`${SERVER_URL}/search?q=${encodeURIComponent(query)}&page=${page}`);
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                if (!append) {
+                    document.getElementById('resultsContainer').innerHTML = '';
+                }
+
+                if (data.videos && data.videos.length > 0) {
+                    if (!append) {
+                        videoList = [];
+                    }
+                    videoList.push(...data.videos);
+
+                    data.videos.forEach(video => {
+                        const videoElement = document.createElement('div');
+                        videoElement.className = 'video-item';
+                        videoElement.innerHTML = `
+                            <img class="video-thumbnail" src="${video.thumbnail}" alt="${video.title}">
+                            <div class="video-info">
+                                <div class="video-title">${video.title}</div>
+                                <div class="video-duration">${formatDuration(video.duration)}</div>
+                            </div>
+                        `;
+                        videoElement.addEventListener('click', () => loadVideo(video));
+                        document.getElementById('resultsContainer').appendChild(videoElement);
+                    });
+
+                    // Iniciar automaticamente o primeiro vídeo se for a primeira página
+                    if (page === 1 && !append && videoList.length > 0) {
+                        // Pequeno delay para garantir que a interface foi atualizada
+                        setTimeout(() => {
+                            loadVideo(videoList[0]);
+                            // Pré-carregar o próximo vídeo
+                            if (videoList.length > 1) {
+                                preloadNextVideo(videoList[1].id);
+                            }
+                        }, 500);
+                    }
+                } else {
+                    if (!append) {
+                        document.getElementById('resultsContainer').innerHTML = '<div class="error">Nenhum vídeo encontrado.</div>';
+                    }
+                }
+
+                if (data.hasMore) {
+                    loadMoreButton.style.display = 'block';
+                    currentPage = page;
+                    currentSearchQuery = query;
+                }
+            } catch (error) {
+                console.error('Erro na busca:', error);
+                if (!append) {
+                    document.getElementById('resultsContainer').innerHTML = `<div class="error">Erro ao buscar vídeos: ${error.message}</div>`;
+                }
+            } finally {
+                searchButton.disabled = false;
+                isSearching = false;
+            }
+        }
+
+        function formatDuration(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const remainingSeconds = seconds % 60;
+            
+            if (hours > 0) {
+                return `${hours}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+            }
+            return `${minutes}:${String(remainingSeconds).padStart(2, '0')}`;
+        }
+
+        // Configurar evento de fim do vídeo para reprodução automática
+        document.getElementById('playerWrapper').addEventListener('ended', async () => {
+            console.log('Vídeo terminado, iniciando próximo...');
+            await playNextVideo();
+        });
+
+        // Permitir busca no vídeo
+        document.getElementById('playerWrapper').addEventListener('seeking', () => {
+            const video = document.getElementById('playerWrapper');
+            const audio = document.getElementById('audioPlayer');
+            audio.currentTime = video.currentTime;
+        });
+
+        // Atualizar controles de navegação
+        function updateNavigationButtons() {
+            const currentIndex = videoList.findIndex(v => v.id === currentVideoId);
+            document.getElementById('prevButton').disabled = currentIndex <= 0;
+            document.getElementById('nextButton').disabled = currentIndex >= videoList.length - 1;
+        }
+    </script>
+</body>
+</html>
